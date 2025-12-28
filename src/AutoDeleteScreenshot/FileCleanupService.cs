@@ -72,9 +72,13 @@ public class FileCleanupService : IDisposable
                     
                     if (deleteTimestamp.HasValue && deleteTimestamp.Value <= currentTimestamp)
                     {
-                        // File expired, delete
-                        File.Delete(filePath);
-                        System.Diagnostics.Debug.WriteLine($"Deleted expired file: {fileName}");
+                        // File expired, delete to Recycle Bin
+                        Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(
+                            filePath,
+                            Microsoft.VisualBasic.FileIO.UIOption.OnlyErrorDialogs,
+                            Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin
+                        );
+                        System.Diagnostics.Debug.WriteLine($"Moved expired file to Recycle Bin: {fileName}");
                     }
                 }
                 catch (Exception ex)
