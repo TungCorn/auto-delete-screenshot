@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.2] - 2025-12-28
+
+### Changed
+- **Defaults:** Changed default auto-delete time to **"No auto-delete"** (0 minutes) on first launch to prevent accidental deletion.
+- **Icon:** Improved icon reliability by embedding `icon.png` directly into the executable (fixes blurry icon on some Single-File builds).
+- **Code:** Translated all source code comments to English.
+- **Docs:** Updated README with explicit Screenshot Folder selection instructions.
+
+## [1.0.1] - 2025-12-28
+
+### Changed
+- **Code:** Translated all source code comments from Vietnamese to English.
+- **Docs:** Refined README structure and language.
+
 ## [1.0.0] - 2025-12-28
 
 ### Added
