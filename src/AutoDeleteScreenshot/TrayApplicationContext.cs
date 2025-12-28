@@ -7,6 +7,8 @@ namespace AutoDeleteScreenshot;
 /// </summary>
 public class TrayApplicationContext : ApplicationContext
 {
+    [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto)]
+    extern static bool DestroyIcon(IntPtr handle);
     private readonly NotifyIcon _trayIcon;
     private readonly ContextMenuStrip _contextMenu;
     private readonly ScreenshotWatcher _screenshotWatcher;
@@ -169,7 +171,17 @@ public class TrayApplicationContext : ApplicationContext
             if (stream != null)
             {
                 using var bitmap = new Bitmap(stream);
-                return Icon.FromHandle(bitmap.GetHicon());
+                IntPtr hIcon = bitmap.GetHicon();
+                Icon icon = Icon.FromHandle(hIcon);
+                
+                // Add cleanup handler for this specific icon instance if needed, 
+                // but Icon.FromHandle wrapper usually manages its own copy. 
+                // However, bitmap.GetHicon() creates a NEW handle that MUST be destroyed.
+                // The Icon.FromHandle creates a managed wrapper around it.
+                // Best practice: Clone the icon and destroy original handle.
+                Icon clonedIcon = (Icon)icon.Clone();
+                DestroyIcon(hIcon);
+                return clonedIcon;
             }
         }
         catch (Exception ex)
@@ -201,7 +213,11 @@ public class TrayApplicationContext : ApplicationContext
             g.FillRectangle(whiteBrush, 28, 14, 8, 22); // Vertical
             g.FillRectangle(whiteBrush, 28, 30, 20, 8); // Horizontal
         }
-        return Icon.FromHandle(bitmap.GetHicon());
+        IntPtr hIcon = bitmap.GetHicon();
+        Icon icon = Icon.FromHandle(hIcon);
+        Icon clonedIcon = (Icon)icon.Clone();
+        DestroyIcon(hIcon);
+        return clonedIcon;
     }
 
     /// <summary>

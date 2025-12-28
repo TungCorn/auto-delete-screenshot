@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.5] - 2025-12-29
+
+### Changed
+- **Optimization:** Replaced `GetFiles` with `EnumerateFiles` for better RAM efficiency when scanning large folders.
+- **Fix:** Fixed a small GDI handle leak (Icon Handle) to ensure resource stability over long runtime.
+
 ## [1.0.4] - 2025-12-28
 
 ### Changed

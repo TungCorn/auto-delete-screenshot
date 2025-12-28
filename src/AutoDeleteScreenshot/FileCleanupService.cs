@@ -58,10 +58,12 @@ public class FileCleanupService : IDisposable
 
             // ONLY get files with delete tag -> PERFORMANCE OPTIMIZATION
             // Pattern: *{DELETE_TAG_PREFIX}*.png
+            // ONLY get files with delete tag -> PERFORMANCE OPTIMIZATION
+            // Pattern: *{DELETE_TAG_PREFIX}*.png
             string searchPattern = $"*{DELETE_TAG_PREFIX}*.png";
-            var files = Directory.GetFiles(_screenshotsPath, searchPattern);
-
-            foreach (var filePath in files)
+            
+            // Use EnumerateFiles for better memory efficiency with large folder contents
+            foreach (var filePath in Directory.EnumerateFiles(_screenshotsPath, searchPattern))
             {
                 try
                 {
